@@ -22,7 +22,9 @@ def set_path(args):
         exp_path = os.path.join(args.mode, '{0}_{args.mode}_{args.net}_{args.dataset}'
                                            '_{args.optimizer}_lr{args.lr}_bs{args.batch_size}'.format(date, args=args))
     else:
-        exp_path = os.path.join(args.mode, args.gmn_path.split(os.sep)[-2])
+        print('path:',args.gmn_path,args.mode)
+        exp_path = os.path.join(args.mode, args.gmn_path.split('/')[-2])
+        #exp_path = '/'+'adapt'
     model_path = os.path.join('models', exp_path)
     log_path = os.path.join('logs', exp_path)
     if not os.path.exists(model_path): os.makedirs(model_path)
@@ -110,6 +112,11 @@ def load_data(imgpath, dims=None, pad=0, normalize=False):
     pad (int): pixels of mean padding to include on each border
     normalize: if True, return image in range [0,1]
     '''
+    imgpath = imgpath.replace('\\','\\\\')
+    import os
+    print(os.getcwd())
+    imgpath=os.getcwd()+imgpath
+    print(imgpath)
     img = scipy.misc.imread(imgpath, mode='RGB')
     if normalize:
         img = img/255.
@@ -130,7 +137,11 @@ def load_dotlabel(lbpath, imgdims, pad=0):
     imgdims: output size
     pad (int): pixels of zero padding to include on each border
     '''
-
+    lbpath = lbpath.replace('\\','\\\\')
+    import os
+    print(os.getcwd())
+    lbpath=os.getcwd()+lbpath
+    print(lbpath)
     lb = scipy.misc.imread(lbpath, mode='RGB')
 
     # resize dot labels

@@ -60,7 +60,7 @@ class get_config(object):
         else:
             raise IOError('==> unknown data set.')
 
-        with np.load('meta/{}.npz'.format(self.dataset)) as data:
+        with np.load('../meta/{}.npz'.format(self.dataset)) as data:
             self.trn_lst = data['trn_lst']
             self.trn_lb = data['trn_lb']
             self.val_lst = data['val_lst']

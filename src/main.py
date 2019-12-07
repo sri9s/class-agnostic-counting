@@ -48,6 +48,7 @@ def train_gmn():
 
     # ==> get dataset information
     trn_config = data_loader.get_config(args)
+    print('trn_config:',trn_config)
     params = {'cg': trn_config,
               'processes': 12,
               'batch_size': args.batch_size,
@@ -100,7 +101,7 @@ def adapt_gmn():
 
     # ==> get dataset information
     trn_config = data_loader.get_config(args)
-
+    print('trn_config:',trn_config)
     params = {'cg': trn_config,
               'processes': 12,
               'batch_size': args.batch_size
@@ -133,6 +134,7 @@ def adapt_gmn():
 
     # ==> transfer weights from gmn to new model (this step is slow, but can't seem to avoid it)
     for i,layer in enumerate(gmn.layers):
+        print(i)
         if isinstance(layer, model.__class__):
             for l in layer.layers:
                 weights = l.get_weights()

@@ -10,12 +10,12 @@ import scipy.ndimage
 import keras.backend as K
 
 import utils as ut
-
+from functools import wraps
 
 def setup_generator(processes=None, batch_size=10, cg=None):
-
-    def init_worker():
-        signal.signal(signal.SIGINT, signal.SIG_IGN)
+    # @wraps(init_worker)
+    # def init_worker():
+        # signal.signal(signal.SIGINT, signal.SIG_IGN)
 
     global pool
     try:
@@ -26,9 +26,11 @@ def setup_generator(processes=None, batch_size=10, cg=None):
     trn_list, trn_lb, val_list, val_lb = cg.trn_lst, cg.trn_lb, cg.val_lst, cg.val_lb
 
     if processes:
-        pool = mp.Pool(processes=processes, initializer=init_worker)
+       print('processes:',processes)
+       pool = mp.Pool(processes=processes)
+       print('--------------')
     else:
-        pool = None
+       pool = None
 
     if cg.dataset == 'imagenet':
         trn_gen = datagen_gmn(X=trn_list,
