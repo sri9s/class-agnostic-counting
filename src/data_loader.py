@@ -38,6 +38,18 @@ class get_config(object):
             self.patchdims = (64, 64, 3)
             self.outputdims = (200, 200, 1)
             self.pad = 0
+            
+        elif self.dataset == 'vgg_cell_new1':
+            self.imgdims = (800, 800, 3)
+            self.patchdims = (64, 64, 3)
+            self.outputdims = (200, 200, 1)
+            self.pad = 0
+            
+        elif self.dataset == 'pipes':
+            self.imgdims = (800, 800, 3)
+            self.patchdims = (64, 64, 3)
+            self.outputdims = (200, 200, 1)
+            self.pad = 0
 
         elif self.dataset == 'hela_cell':
             self.imgdims = (800, 800, 3)

@@ -3,6 +3,7 @@ import sys
 import argparse
 import numpy as np
 import utils as ut
+from PIL import Image
 
 # ===========================================
 #        Parse the argument
@@ -14,7 +15,7 @@ parser.add_argument('--optimizer', default='adam', choices=['adam'], type=str)
 parser.add_argument('--mode', default='pretrain', choices=['pretrain', 'adapt'], type=str,
                     help='pretrain on tracking data or adapt to specific dataset.')
 parser.add_argument('--dataset', default='imagenet',
-                    choices=['imagenet', 'vgg_cell', 'hela_cell', 'car'],
+                    choices=['imagenet', 'vgg_cell', 'hela_cell', 'car','vgg_cell_new1','pipes'],
                     type=str, help='pretrain on tracking data or adapt to specific dataset.')
 parser.add_argument('--lr', default=0.0005, type=float)
 parser.add_argument('--warmup_ratio', default=0, type=float)
@@ -155,7 +156,7 @@ def adapt_gmn():
                                                  save_best_only=True,
                                                  mode='min'),
                  normal_lr, tbcallbacks]
-
+    print('<------------------------------------------------------------------->')
     model.fit_generator(trn_gen,
                         steps_per_epoch=600,
                         epochs=args.epochs,
@@ -163,7 +164,17 @@ def adapt_gmn():
                         validation_steps=100,
                         callbacks=callbacks,
                         verbose=1)
-
+    trn_gen, val_gen = data_generator.setup_generator(**params)
+    print('predicting on validation dataset')
+    print(val_gen)
+    model_predicts = model.predict_generator(val_gen, steps=5)
+    print(model_predicts,model_predicts.shape)
+    
+    for i in range(5):
+        img = Image.fromarray(model_predicts[i,:,:,:],'RGB')
+        img.save(r'C:\Users\Sri\Documents\GitHub\class-agnostic-counting\src\path\to\pipe_dataset_reshaped_predictions\\'+str(i)+'.png')
+        img.show()
+    
 
 if __name__ == '__main__':
     if args.mode == 'pretrain':
